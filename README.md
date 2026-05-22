@@ -1,1 +1,2 @@
-# Repository for Final project
+# Repository for final project
+Project name = Final project
