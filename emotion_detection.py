@@ -1,0 +1,17 @@
+import requests
+import json
+
+def emotion_detector(text_to_analyze):
+    url = 'https://sn-watson-emotion.labs.skills.network/v1/watson.runtime.nlp.v1/NlpService/EmotionPredict' 
+    #url = 'https://sn-watson-sentiment-bert.labs.skills.network/v1/watson.runtime.nlp.v1/NlpService/SentimentPredict'
+    header = {"grpc-metadata-mm-model-id": "emotion_aggregated-workflow_lang_en_stock"}
+    #header= {"grpc-metadata-mm-model-id": "sentiment_aggregated-bert-workflow_lang_multi_stock"}
+    myobj = { "raw_document": { "text": text_to_analyze } }
+    response = requests.post(url, json = myobj, headers=header)
+    #print(response.status_code)
+    #return response.text
+    response_modi = json.loads(response.text)
+    output_res = response_modi['emotionPredictions'][0]['emotion']
+    name_dominant_emotion = max(output_res, key = output_res.get)
+    output_res['dominant_emotion'] = name_dominant_emotion
+    return output_res
